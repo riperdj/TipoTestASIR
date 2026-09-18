@@ -144,7 +144,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, onTextSubmit, onL
                 Selecciona o arrastra tu archivo Word (.docx)
               </p>
               <p className="text-sm text-slate-500 max-w-md">
-                Apuntes, temarios, resúmenes, leyes o exámenes. <strong className="text-slate-700 font-semibold">No es necesario que las respuestas estén marcadas</strong>.
+                Apuntes, temarios, resúmenes, leyes o exámenes.
               </p>
             </div>
             <input 

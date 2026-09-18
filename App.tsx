@@ -168,7 +168,7 @@ const App: React.FC = () => {
               <BrainCircuit className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-lg sm:text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-500 tracking-tight">
+              <h1 className="text-[33px] text-left leading-tight font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-500 tracking-tight">
                 EXÁMENES TIPO TEST
               </h1>
               {fileName && step !== AppStep.UPLOAD && (
@@ -223,7 +223,7 @@ const App: React.FC = () => {
                 Analiza tus documentos y genera <span className="text-blue-600">exámenes tipo test</span>
               </h2>
               <p className="text-base sm:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                Sube cualquier documento Word (apuntes, leyes, resúmenes o temas). La IA analiza el contenido y genera preguntas tipo test con 4 opciones y respuestas fundamentadas, <strong>sin necesidad de que vengan marcadas</strong>.
+                Sube cualquier documento Word (apuntes, leyes, resúmenes o temas). La IA analiza el contenido y genera preguntas tipo test con 4 opciones y respuestas fundamentadas.
               </p>
             </div>
             <FileUpload 
