@@ -1,0 +1,8 @@
+{
+  "name": "EXAMENES TIPO TEST",
+  "description": "Generador y analizador de exámenes tipo test interactivos a partir de cualquier documento o texto, sin requerir preguntas ni respuestas marcadas previamente.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
