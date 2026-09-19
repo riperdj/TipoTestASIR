@@ -48,30 +48,59 @@ export async function parseQuizContent(rawText: string, targetCount?: number): P
     """
   `;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-3.8-flash",
-    contents: prompt,
-    config: {
-      maxOutputTokens: 65536,
-      responseMimeType: "application/json",
-      responseSchema: {
-        type: Type.ARRAY,
-        items: {
-          type: Type.OBJECT,
-          properties: {
-            question: { type: Type.STRING },
-            options: { 
-              type: Type.ARRAY, 
-              items: { type: Type.STRING } 
+  let response;
+  try {
+    response = await ai.models.generateContent({
+      model: "gemini-1.5-flash",
+      contents: prompt,
+      config: {
+        maxOutputTokens: 8192,
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              question: { type: Type.STRING },
+              options: { 
+                type: Type.ARRAY, 
+                items: { type: Type.STRING } 
+              },
+              correctAnswerIndex: { type: Type.INTEGER },
+              explanation: { type: Type.STRING }
             },
-            correctAnswerIndex: { type: Type.INTEGER },
-            explanation: { type: Type.STRING }
-          },
-          required: ["question", "options", "correctAnswerIndex"]
+            required: ["question", "options", "correctAnswerIndex"]
+          }
         }
       }
-    }
-  });
+    });
+  } catch (err) {
+    console.warn("Error al invocar gemini-1.5-flash, utilizando fallback:", err);
+    response = await ai.models.generateContent({
+      model: "gemini-flash-latest",
+      contents: prompt,
+      config: {
+        maxOutputTokens: 8192,
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              question: { type: Type.STRING },
+              options: { 
+                type: Type.ARRAY, 
+                items: { type: Type.STRING } 
+              },
+              correctAnswerIndex: { type: Type.INTEGER },
+              explanation: { type: Type.STRING }
+            },
+            required: ["question", "options", "correctAnswerIndex"]
+          }
+        }
+      }
+    });
+  }
 
   const text = response.text;
   if (!text) throw new Error("No se recibió respuesta del modelo al analizar el documento.");
