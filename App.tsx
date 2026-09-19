@@ -60,7 +60,11 @@ const App: React.FC = () => {
         throw new Error("El archivo no contiene texto legible.");
       }
 
-      setLoadingMessage("Analizando temas y generando preguntas tipo test con IA...");
+      if (targetCount && targetCount >= 50) {
+        setLoadingMessage(`Analizando documento y generando banco extenso de ${targetCount} preguntas con IA... Esto puede tardar unos segundos.`);
+      } else {
+        setLoadingMessage("Analizando temas y generando preguntas tipo test con IA...");
+      }
 
       // 2. Parse with Gemini (without requiring marked answers)
       const parsedQuestions = await parseQuizContent(rawText, targetCount);
@@ -85,7 +89,11 @@ const App: React.FC = () => {
     setError(null);
     setFileName(title || "Texto / Apuntes");
     setStep(AppStep.PROCESSING);
-    setLoadingMessage("Analizando texto y generando preguntas tipo test...");
+    if (targetCount && targetCount >= 50) {
+      setLoadingMessage(`Analizando texto y generando banco extenso de ${targetCount} preguntas...`);
+    } else {
+      setLoadingMessage("Analizando texto y generando preguntas tipo test...");
+    }
 
     try {
       const parsedQuestions = await parseQuizContent(text, targetCount);

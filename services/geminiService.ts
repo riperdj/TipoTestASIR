@@ -10,7 +10,7 @@ export async function parseQuizContent(rawText: string, targetCount?: number): P
   const ai = new GoogleGenAI({ apiKey });
 
   const countInstruction = targetCount && targetCount > 0 
-    ? `Extrae o genera aproximadamente ${targetCount} preguntas tipo test.` 
+    ? `Extrae o genera exactamente o aproximadamente ${targetCount} preguntas tipo test (si el texto tiene suficiente longitud para ello). Asegúrate de cubrir de forma exhaustiva y distribuida todo el documento.` 
     : `Extrae o genera un banco completo de preguntas (entre 10 y 25 preguntas, o tantas como el contenido permita para cubrir todos los temas clave).`;
 
   const prompt = `
@@ -52,6 +52,7 @@ export async function parseQuizContent(rawText: string, targetCount?: number): P
     model: "gemini-3.8-flash",
     contents: prompt,
     config: {
+      maxOutputTokens: 65536,
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.ARRAY,
@@ -76,7 +77,11 @@ export async function parseQuizContent(rawText: string, targetCount?: number): P
   if (!text) throw new Error("No se recibió respuesta del modelo al analizar el documento.");
   
   try {
-    const questions = JSON.parse(text) as any[];
+    let cleanJson = text.trim();
+    if (cleanJson.startsWith("```")) {
+      cleanJson = cleanJson.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+    }
+    const questions = JSON.parse(cleanJson) as any[];
     return questions.map((q, idx) => {
       const cleanOptions = (q.options || []).map((opt: string) => 
         (opt || '')

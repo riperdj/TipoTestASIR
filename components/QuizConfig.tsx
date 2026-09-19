@@ -40,7 +40,7 @@ export const QuizConfig: React.FC<QuizConfigProps> = ({
 
   // Compute preset choices based on total available questions
   const presets = useMemo(() => {
-    const list = [5, 10, 15, 20, 25, 30, 40, 50].filter(n => n < totalQuestionsCount);
+    const list = [5, 10, 15, 20, 25, 30, 40, 50, 75, 100].filter(n => n < totalQuestionsCount);
     return list;
   }, [totalQuestionsCount]);
 
@@ -122,12 +122,23 @@ export const QuizConfig: React.FC<QuizConfigProps> = ({
             </div>
 
             {/* Stepper and Direct Input */}
-            <div className="flex items-center justify-center gap-3 pt-2">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 pt-2">
+              {totalQuestionsCount >= 30 && (
+                <button
+                  type="button"
+                  onClick={() => handleCountChange(questionCount - 10)}
+                  disabled={questionCount <= 1}
+                  className="px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  title="Restar 10 preguntas"
+                >
+                  -10
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => handleCountChange(questionCount - 5)}
                 disabled={questionCount <= 1}
-                className="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 -5
               </button>
@@ -161,10 +172,21 @@ export const QuizConfig: React.FC<QuizConfigProps> = ({
                 type="button"
                 onClick={() => handleCountChange(questionCount + 5)}
                 disabled={questionCount >= totalQuestionsCount}
-                className="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 +5
               </button>
+              {totalQuestionsCount >= 30 && (
+                <button
+                  type="button"
+                  onClick={() => handleCountChange(questionCount + 10)}
+                  disabled={questionCount >= totalQuestionsCount}
+                  className="px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                  title="Sumar 10 preguntas"
+                >
+                  +10
+                </button>
+              )}
             </div>
 
             {/* Presets Quick Chips */}
